@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package example;
+option go_package = "proto/example";
+
+message Example {
+  enum ENUM {
+    UNKONW = 0;
+    HTTP   = 1;
+    GRPC   = 2;
+  }
+  int64  i64_example  = 1;
+  string str_example  = 2;
+  ENUM   enum_example = 3;
+}
+
+
