@@ -3,7 +3,7 @@ syntax = "proto3";
 package example;
 option go_package = "proto/example";
 
-message Example {
+message ExampleTimestamp {
   enum ENUM {
     UNKONW = 0;
     HTTP   = 1;

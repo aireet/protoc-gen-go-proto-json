@@ -4,7 +4,7 @@ import (
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/types/pluginpb"
 
-	"github.com/aireet/protoc-gen-go-proto-json/gen"
+	"github.com/aireet/protoc-gen-go-proto-json/core"
 )
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 				continue
 			}
 
-			gen.Gen(plugin, f)
+			core.Gen(plugin, f)
 		}
 		return nil
 	})

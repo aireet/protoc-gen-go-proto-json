@@ -1,4 +1,4 @@
-package gen
+package core
 
 import (
 	"fmt"
@@ -7,32 +7,19 @@ import (
 )
 
 func Gen(plugin *protogen.Plugin, f *protogen.File) *protogen.GeneratedFile {
-	err := genCodec(plugin, f)
-	if err != nil {
-		panic(err)
-	}
-	err = genMessage(plugin, f)
+	err := genMessage(plugin, f)
 	if err != nil {
 		panic(err)
 	}
 	return nil
 }
 
-func genCodec(plugin *protogen.Plugin, f *protogen.File) error {
-	w := plugin.NewGeneratedFile(
-		fmt.Sprintf("%s.pb_codec.go", f.GoPackageName),
-		f.GoImportPath,
-	)
-	return template.Must(
-		template.New("initTpl").Parse(initTpl),
-	).Execute(w, f)
-}
-
 func genMessage(plugin *protogen.Plugin, f *protogen.File) error {
 	w := plugin.NewGeneratedFile(
-		fmt.Sprintf("%s.pb_json.go", f.GoPackageName),
+		fmt.Sprintf("%s.pb.protojson.go", f.GeneratedFilenamePrefix),
 		f.GoImportPath,
 	)
+
 	err := template.Must(
 		template.New("importTpl").Parse(importTpl),
 	).Execute(w, f)
@@ -41,8 +28,16 @@ func genMessage(plugin *protogen.Plugin, f *protogen.File) error {
 		return err
 	}
 
-	tpl := template.Must(
-		template.New("messageTpl").Parse(messageTpl),
+	err = template.Must(
+		template.New("initTp;").Parse(initTpl),
+	).Execute(w, f)
+
+	if err != nil {
+		return err
+	}
+
+	msgTpl := template.Must(
+		template.New("codecTpl").Parse(codecTpl),
 	)
 
 	for _, msg := range f.Messages {
@@ -50,7 +45,7 @@ func genMessage(plugin *protogen.Plugin, f *protogen.File) error {
 			continue
 		}
 
-		err = tpl.Execute(w, struct {
+		err = msgTpl.Execute(w, struct {
 			*protogen.Message
 			*protogen.File
 		}{msg, f})

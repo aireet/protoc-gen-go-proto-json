@@ -1,11 +1,15 @@
-SRC_DIR=./proto
-
+PB_DIR=./proto
+GEN_DIR=./proto/gen
 
 run:
 	go install .
 
+	mkdir -p $(GEN_DIR)
+
 	protoc 		\
-	-I $(SRC_DIR) \
-	--go_out=paths=source_relative:$(SRC_DIR) \
-	--go-proto-json_out=source_relative:$(SRC_DIR) \
-	$(SRC_DIR)/example.proto
+	-I $(PB_DIR) \
+	--go_out=$(GEN_DIR) \
+	--go_opt paths=source_relative \
+	--go-proto-json_out=$(GEN_DIR) \
+	--go-proto-json_opt paths=source_relative \
+	$(PB_DIR)/enums.proto $(PB_DIR)/timestamp.proto
