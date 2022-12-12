@@ -24,6 +24,10 @@ type ExampleTimestampProtoJsonCodec struct {
 	protojson.UnmarshalOptions
 }
 
+func (c ExampleTimestampProtoJsonCodec) Name() string {
+	return "example.ExampleTimestamp"
+}
+
 // Customize codec
 func RegisterExampleTimestampCodec(m protojson.MarshalOptions, u protojson.UnmarshalOptions) {
 	encoding.RegisterCodec(ExampleTimestampProtoJsonCodec{m, u})
@@ -31,12 +35,12 @@ func RegisterExampleTimestampCodec(m protojson.MarshalOptions, u protojson.Unmar
 
 // MarshalJSON implements json.Marshaler
 func (msg *ExampleTimestamp) MarshalJSON() ([]byte, error) {
-	return encoding.GetCodec("ExampleTimestamp_codec").Marshal(msg)
+	return encoding.GetCodec("example.ExampleTimestamp").Marshal(msg)
 }
 
 // UnmarshalJSON implements json.Unmarshaler
 func (msg *ExampleTimestamp) UnmarshalJSON(b []byte) error {
-	return encoding.GetCodec("ExampleTimestamp_codec").Unmarshal(b, msg)
+	return encoding.GetCodec("example.ExampleTimestamp").Unmarshal(b, msg)
 }
 
 func (c ExampleTimestampProtoJsonCodec) Marshal(v interface{}) ([]byte, error) {
@@ -60,8 +64,4 @@ func (c ExampleTimestampProtoJsonCodec) Unmarshal(data []byte, v interface{}) er
 		return fmt.Errorf("failed to unmarshal, message is %T, want proto.Message", v)
 	}
 	return c.UnmarshalOptions.Unmarshal(data, vv)
-}
-
-func (c ExampleTimestampProtoJsonCodec) Name() string {
-	return "ExampleTimestamp_codec"
 }

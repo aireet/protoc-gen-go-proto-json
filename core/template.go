@@ -33,6 +33,10 @@ type {{ .GoIdent.GoName }}ProtoJsonCodec struct {
 	protojson.UnmarshalOptions
 }
 
+func (c {{ .GoIdent.GoName }}ProtoJsonCodec) Name() string {
+	return "{{.GoPackageName}}.{{ .GoIdent.GoName }}"
+}
+
 // Customize codec
 func Register{{ .GoIdent.GoName }}Codec(m protojson.MarshalOptions, u protojson.UnmarshalOptions) {
 	encoding.RegisterCodec({{ .GoIdent.GoName }}ProtoJsonCodec{m, u})
@@ -40,11 +44,11 @@ func Register{{ .GoIdent.GoName }}Codec(m protojson.MarshalOptions, u protojson.
 
 // MarshalJSON implements json.Marshaler
 func (msg *{{.GoIdent.GoName}}) MarshalJSON() ([]byte,error) {
-	return encoding.GetCodec("{{.GoIdent.GoName}}_codec").Marshal(msg)
+	return encoding.GetCodec("{{.GoPackageName}}.{{.GoIdent.GoName}}").Marshal(msg)
 }
 // UnmarshalJSON implements json.Unmarshaler
 func (msg *{{.GoIdent.GoName}}) UnmarshalJSON(b []byte) error {
-	return encoding.GetCodec("{{.GoIdent.GoName}}_codec").Unmarshal(b, msg)
+	return encoding.GetCodec("{{.GoPackageName}}.{{.GoIdent.GoName}}").Unmarshal(b, msg)
 }
 
 func (c {{ .GoIdent.GoName }}ProtoJsonCodec) Marshal(v interface{}) ([]byte, error) {
@@ -68,10 +72,6 @@ func (c {{ .GoIdent.GoName }}ProtoJsonCodec) Unmarshal(data []byte, v interface{
 		return fmt.Errorf("failed to unmarshal, message is %T, want proto.Message", v)
 	}
 	return c.UnmarshalOptions.Unmarshal(data, vv)
-}
-
-func (c {{ .GoIdent.GoName }}ProtoJsonCodec) Name() string {
-	return "{{ .GoIdent.GoName }}_codec"
 }
 
 `

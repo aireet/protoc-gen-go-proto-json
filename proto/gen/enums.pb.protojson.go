@@ -30,6 +30,10 @@ type ExampleEnumsProtoJsonCodec struct {
 	protojson.UnmarshalOptions
 }
 
+func (c ExampleEnumsProtoJsonCodec) Name() string {
+	return "example.ExampleEnums"
+}
+
 // Customize codec
 func RegisterExampleEnumsCodec(m protojson.MarshalOptions, u protojson.UnmarshalOptions) {
 	encoding.RegisterCodec(ExampleEnumsProtoJsonCodec{m, u})
@@ -37,12 +41,12 @@ func RegisterExampleEnumsCodec(m protojson.MarshalOptions, u protojson.Unmarshal
 
 // MarshalJSON implements json.Marshaler
 func (msg *ExampleEnums) MarshalJSON() ([]byte, error) {
-	return encoding.GetCodec("ExampleEnums_codec").Marshal(msg)
+	return encoding.GetCodec("example.ExampleEnums").Marshal(msg)
 }
 
 // UnmarshalJSON implements json.Unmarshaler
 func (msg *ExampleEnums) UnmarshalJSON(b []byte) error {
-	return encoding.GetCodec("ExampleEnums_codec").Unmarshal(b, msg)
+	return encoding.GetCodec("example.ExampleEnums").Unmarshal(b, msg)
 }
 
 func (c ExampleEnumsProtoJsonCodec) Marshal(v interface{}) ([]byte, error) {
@@ -68,14 +72,14 @@ func (c ExampleEnumsProtoJsonCodec) Unmarshal(data []byte, v interface{}) error 
 	return c.UnmarshalOptions.Unmarshal(data, vv)
 }
 
-func (c ExampleEnumsProtoJsonCodec) Name() string {
-	return "ExampleEnums_codec"
-}
-
 // Default codec
 type Enums2ProtoJsonCodec struct {
 	protojson.MarshalOptions
 	protojson.UnmarshalOptions
+}
+
+func (c Enums2ProtoJsonCodec) Name() string {
+	return "example.Enums2"
 }
 
 // Customize codec
@@ -85,12 +89,12 @@ func RegisterEnums2Codec(m protojson.MarshalOptions, u protojson.UnmarshalOption
 
 // MarshalJSON implements json.Marshaler
 func (msg *Enums2) MarshalJSON() ([]byte, error) {
-	return encoding.GetCodec("Enums2_codec").Marshal(msg)
+	return encoding.GetCodec("example.Enums2").Marshal(msg)
 }
 
 // UnmarshalJSON implements json.Unmarshaler
 func (msg *Enums2) UnmarshalJSON(b []byte) error {
-	return encoding.GetCodec("Enums2_codec").Unmarshal(b, msg)
+	return encoding.GetCodec("example.Enums2").Unmarshal(b, msg)
 }
 
 func (c Enums2ProtoJsonCodec) Marshal(v interface{}) ([]byte, error) {
@@ -116,14 +120,14 @@ func (c Enums2ProtoJsonCodec) Unmarshal(data []byte, v interface{}) error {
 	return c.UnmarshalOptions.Unmarshal(data, vv)
 }
 
-func (c Enums2ProtoJsonCodec) Name() string {
-	return "Enums2_codec"
-}
-
 // Default codec
 type Enums3ProtoJsonCodec struct {
 	protojson.MarshalOptions
 	protojson.UnmarshalOptions
+}
+
+func (c Enums3ProtoJsonCodec) Name() string {
+	return "example.Enums3"
 }
 
 // Customize codec
@@ -133,12 +137,12 @@ func RegisterEnums3Codec(m protojson.MarshalOptions, u protojson.UnmarshalOption
 
 // MarshalJSON implements json.Marshaler
 func (msg *Enums3) MarshalJSON() ([]byte, error) {
-	return encoding.GetCodec("Enums3_codec").Marshal(msg)
+	return encoding.GetCodec("example.Enums3").Marshal(msg)
 }
 
 // UnmarshalJSON implements json.Unmarshaler
 func (msg *Enums3) UnmarshalJSON(b []byte) error {
-	return encoding.GetCodec("Enums3_codec").Unmarshal(b, msg)
+	return encoding.GetCodec("example.Enums3").Unmarshal(b, msg)
 }
 
 func (c Enums3ProtoJsonCodec) Marshal(v interface{}) ([]byte, error) {
@@ -162,8 +166,4 @@ func (c Enums3ProtoJsonCodec) Unmarshal(data []byte, v interface{}) error {
 		return fmt.Errorf("failed to unmarshal, message is %T, want proto.Message", v)
 	}
 	return c.UnmarshalOptions.Unmarshal(data, vv)
-}
-
-func (c Enums3ProtoJsonCodec) Name() string {
-	return "Enums3_codec"
 }
